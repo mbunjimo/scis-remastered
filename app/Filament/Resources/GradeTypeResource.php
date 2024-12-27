@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoleResource\Pages;
-use App\Filament\Resources\RoleResource\RelationManagers;
-use App\Models\Role;
+use App\Filament\Resources\GradeTypeResource\Pages;
+use App\Filament\Resources\GradeTypeResource\RelationManagers;
+use App\Models\GradeType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,22 +13,19 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RoleResource extends Resource
+class GradeTypeResource extends Resource
 {
-    protected static ?string $model = Role::class;
+    protected static ?string $model = GradeType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-star';
 
-    protected static ?string $navigationGroup = 'Users management';
+    protected static ?string $navigationGroup = 'Grades management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 //
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
             ]);
     }
 
@@ -37,7 +34,6 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //
@@ -62,9 +58,9 @@ class RoleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoles::route('/'),
-            // 'create' => Pages\CreateRole::route('/create'),
-            'edit' => Pages\EditRole::route('/{record}/edit'),
+            'index' => Pages\ListGradeTypes::route('/'),
+            'create' => Pages\CreateGradeType::route('/create'),
+            'edit' => Pages\EditGradeType::route('/{record}/edit'),
         ];
     }
 }
