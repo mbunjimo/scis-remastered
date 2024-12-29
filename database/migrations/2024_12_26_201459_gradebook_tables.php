@@ -43,7 +43,7 @@ return new class extends Migration
         Schema::create('grades_types', function (Blueprint $table) {
             $table->id();
             $table->string('gradeTypeId')->unique();  // gradeTypeId be like O-level-NECTA or A-level-NECTA or 
-            $table->string('gradeType');
+            $table->string('gradeTypeName'); // change this to gradeTypeName
             $table->string('description')->nullable();
             $table->timestamps();
         });
@@ -70,8 +70,8 @@ return new class extends Migration
 
         Schema::create('class_level_teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('class_level_id');
-            $table->foreign('class_level_id')->references('classId')->on('class_levels');
+            $table->unsignedBigInteger('class_level_id');
+            $table->foreign('class_level_id')->references('id')->on('class_levels');
             $table->unsignedBigInteger('teacher_id');
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->timestamps();
@@ -123,14 +123,14 @@ return new class extends Migration
 
         Schema::create('assessments_results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('assessment_id');
+            $table->unsignedBigInteger('assessment_id')->nullable();
             $table->foreign('assessment_id')->references('id')->on('subjects_assessments');
-            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('student_id')->nullable();
             $table->foreign('student_id')->references('id')->on('users');
-            $table->string('marks');
-            $table->string('grade_type_id');
+            $table->string('marks')->nullable(); // should be a number
+            $table->string('grade_type_id')->nullable();
             $table->foreign('grade_type_id')->references('gradeTypeId')->on('grades_types');
-            $table->unsignedBigInteger('grade_type_range_id');
+            $table->unsignedBigInteger('grade_type_range_id')->nullable();
             $table->foreign('grade_type_range_id')->references('id')->on('grades_types_ranges');
             $table->string('remarks')->nullable();
             $table->timestamps();

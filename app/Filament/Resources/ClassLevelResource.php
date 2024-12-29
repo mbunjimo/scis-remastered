@@ -28,21 +28,48 @@ class ClassLevelResource extends Resource
                 //
                 Forms\Components\TextInput::make('classId')
                     ->label('Class ID')
+                    ->placeholder('2025-F5-PCM-A')
                     ->required()
                     ->maxLength(255), // classId should be like 2025-F5-PCM-A
-                Forms\Components\TextInput::make('year')
+                Forms\Components\Select::make('year')
                     ->label('Year')
-                    ->required()
-                    ->maxLength(255),
+                    ->options([
+                        '2020' => '2020',
+                        '2021' => '2021',
+                        '2022' => '2022',
+                        '2023' => '2023',
+                        '2024' => '2024',
+                        '2025' => '2025',
+                    ])
+                    ->required(),
                 Forms\Components\TextInput::make('level')
+                    ->placeholder('F5')
                     ->label('Level')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('combination')
+                Forms\Components\Select::make('combination')
                     ->label('Combination')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('stream')
+                    ->options([
+                        'PCM' => 'PCM',
+                        'PCB' => 'PCB',
+                        'EGM' => 'EGM',
+                        'PGM' => 'PGM',
+                        'ECA' => 'ECA',
+                        'PMC' => 'PMC',
+                        'HKL' => 'HKL',
+                        'HGK' => 'HGK',
+                        'HGL' => 'HGL',
+                    ]),
+                Forms\Components\Select::make('stream')
                     ->label('Stream')
-                    ->maxLength(255),
+                    ->options([
+                        'A' => 'A',
+                        'B' => 'B',
+                        'C' => 'C',
+                        'D' => 'D',
+                        'E' => 'E',
+                        'F' => 'F',
+                        'G' => 'G',
+                    ]),
                 
             ]);
     }

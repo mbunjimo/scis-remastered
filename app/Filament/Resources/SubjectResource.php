@@ -33,6 +33,7 @@ class SubjectResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                     ->label('Subject Name')
+                    ->placeholder('2024 Geography F3, 2024 Mathematics F3, 2024 Science F3, etc.')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('shortName')

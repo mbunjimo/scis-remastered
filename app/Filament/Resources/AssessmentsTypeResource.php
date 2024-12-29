@@ -33,7 +33,7 @@ class AssessmentsTypeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
-                    ->placeholder('TEST-1, MIDTERM, FINAL, etc.')
+                    ->placeholder('2025 Test 1, 2025 Midterm, 2025 Final, etc.')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Facades\DB;
 use App\Filament\Resources\SubjectsAssessmentResource\Pages;
 use App\Filament\Resources\SubjectsAssessmentResource\RelationManagers;
 use App\Models\SubjectsAssessment;
@@ -29,14 +30,13 @@ class SubjectsAssessmentResource extends Resource
             ->schema([
                 //
                 Forms\Components\Select::make('subject_id')
-                    ->label('Subject ID')
-                    ->relationship('subject', 'subjectId')
+                    ->label('Subject Name')
+                    ->relationship('subject', 'name')
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('assessment_type_id')
-                    ->label('Assessment Type ID')
-                    ->relationship('assessmentType', 'assessmentTypeId')
-                    ->searchable()
+                    ->label('Assessment Type Name')
+                    ->relationship('assessmentType', 'name')
                     ->required(),
                 Forms\Components\Select::make('class_level_id')
                     ->label('Class Level ID')
@@ -72,14 +72,14 @@ class SubjectsAssessmentResource extends Resource
     {
         return $table
             ->columns([
-                //
-                Tables\Columns\TextColumn::make('subject_id')
-                    ->label('Subject ID')
+                // relationship on subject table
+                Tables\Columns\TextColumn::make('subject.name')
+                    ->label('Subject Name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('assessment_type_id')
-                    ->label('Assessment Type ID')
+                Tables\Columns\TextColumn::make('assessmentType.name')
+                    ->label('Assessment Type Name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('class_level_id')
+                Tables\Columns\TextColumn::make('classLevel.classId')
                     ->label('Class Level ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('assessment_date')
@@ -87,6 +87,13 @@ class SubjectsAssessmentResource extends Resource
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('assessment_status')
                     ->label('Assessment Status')
+                    ->color(fn ($state) => match ($state) {
+                        'active' => 'success',
+                        'pending' => 'warning',
+                        'in_progress' => 'info',
+                        'marking' => 'danger',
+                        'completed' => 'success',
+                    })
                     ->sortable(),
             ])
             ->filters([
@@ -94,6 +101,33 @@ class SubjectsAssessmentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('fillResults')
+                    ->label('Fill Results')
+                    ->action(function ($record) {
+                        // Get the ID of the selected assessment
+                        $assessmentId = $record->id;
+
+                        // Use the assessment ID as needed
+                        // For example, you can use it to insert into another table
+
+                        // Get all students in the class level using table class_level_students
+                        $students = DB::table('class_level_students')
+                            ->where('class_level_id', $record->class_level_id)
+                            ->pluck('student_id');
+
+                        // Create a new assessment result for each student
+                        foreach ($students as $studentId) {
+                                DB::table('assessments_results')->insert([
+                                    'student_id' => $studentId,
+                                    'assessment_id' => $assessmentId,
+                                    'marks' => '0', // or should be a number
+                                ]);
+                        }
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Fill Results')
+                    ->modalSubheading('Are you sure you want to fill results for this assessment?')
+                    ->modalButton('Yes, Fill Results'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -114,7 +148,7 @@ class SubjectsAssessmentResource extends Resource
         return [
             'index' => Pages\ListSubjectsAssessments::route('/'),
             'create' => Pages\CreateSubjectsAssessment::route('/create'),
-            'edit' => Pages\EditSubjectsAssessment::route('/{record}/edit'),
+            // 'edit' => Pages\EditSubjectsAssessment::route('/{record}/edit'),
         ];
     }
 }
