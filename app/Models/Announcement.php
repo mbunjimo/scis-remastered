@@ -12,6 +12,10 @@ class Announcement extends Model
 
     protected $fillable = ['title', 'description', 'image', 'expiry_date', 'created_by', 'status', 'priority'];
 
+    protected $casts = [
+        'expiry_date' => 'date'
+    ];
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
