@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\AssessmentsResultExporter;
 use App\Filament\Resources\AssessmentsResultResource\Pages;
 use App\Filament\Resources\AssessmentsResultResource\RelationManagers;
 use App\Models\AssessmentsResult;
@@ -17,7 +18,11 @@ class AssessmentsResultResource extends Resource
 {
     protected static ?string $model = AssessmentsResult::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Assessments management';
+
+    protected static ?string $navigationLabel = 'Student Results';
+
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
@@ -75,10 +80,15 @@ class AssessmentsResultResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
+            ->headerActions([
+                // Tables\Actions\ExportAction::make()->exporter(AssessmentsResultExporter::class),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
+                Tables\Actions\ExportBulkAction::make()->exporter(AssessmentsResultExporter::class),
             ]);
     }
 
