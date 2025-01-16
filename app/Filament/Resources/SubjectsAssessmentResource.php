@@ -128,6 +128,25 @@ class SubjectsAssessmentResource extends Resource
                     ->modalHeading('Confirm Fill Results')
                     ->modalSubheading('Are you sure you want to fill results for this assessment?')
                     ->modalButton('Yes, Fill Results'),
+
+
+                // The implementation of the Submit results action
+                Tables\Actions\Action::make('Submit results')
+                    ->label('Submit Results')
+                    ->action(function ($record) {
+                        // Get the ID of the selected assessment
+                        $assessmentId = $record->id;
+
+                        // assist to check if all students are actually filled
+                        // if not, then show a message to the user
+                        // if yes, then submit the results, cereate a field that identified if teh resukts are submitted i.e isSubmitted
+                        // and then update the assessment_status to completed/submitted
+                        
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Submit Results')
+                    ->modalSubheading('Are you sure you want to submit results for this assessment?')
+                    ->modalButton('Yes, Submit Results'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

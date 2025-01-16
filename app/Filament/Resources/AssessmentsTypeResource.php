@@ -56,6 +56,14 @@ class AssessmentsTypeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Generate Report')
+                    ->label('Generate Report')
+                    ->action(function ($record) {
+                        // Generate a report for the selected assessment
+                        // make sure to check if the results are submitted
+                        // if not, then show a message to the user
+                        // if yes, then generate the report
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
