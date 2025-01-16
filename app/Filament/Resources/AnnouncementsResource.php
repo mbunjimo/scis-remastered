@@ -57,8 +57,10 @@ class AnnouncementsResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('title')
+                    ->words(10),
+                Tables\Columns\TextColumn::make('description')
+                    ->words(5),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\BadgeColumn::make('priority')
                     ->sortable()
