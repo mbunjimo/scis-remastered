@@ -46,6 +46,7 @@ return new class extends Migration
             $table->string('gradeTypeName'); // change this to gradeTypeName
             $table->string('description')->nullable();
             $table->timestamps();
+            
         });
 
         Schema::create('grades_types_ranges', function (Blueprint $table) {
